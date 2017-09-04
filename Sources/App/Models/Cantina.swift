@@ -2,58 +2,53 @@
 //  Cantina.swift
 //  cantina
 //
-//  Created by Romero, Juan, SEVEN PRINCIPLES on 02.09.17.
+//  Created by Romero, Juan, SEVEN PRINCIPLES on 03.09.17.
 //
 //
 
 import Vapor
 
-enum MealCategory: String {
-    case soup
-    case basic
-    case special
-    case salad
-    case vegetarian
-    case unknown
+final class Cantina {
 
-    static func from(title: String) -> MealCategory {
-        switch title {
-        case "Suppen / Eintöpfe": return .soup
-        case "Stammessen": return .basic
-        case "Großer Salatteller": return .salad
-        case "Aktion": return .special
-        case "Vegetarisch": return .vegetarian
-        default: return .unknown
-            // TODO: handle unknown titles
-        }
+    final var week: Week
+    final var isDataCurrent: Bool {
+        return week.number >= Date.currentWeek
     }
-}
 
-struct Meal: CustomStringConvertible {
-    var category: MealCategory
-    var details: String
-    var price: Float
+    init(fromWeb string: String) throws {
+        guard let week = try CantinaHTML(fromWebContent: string).makeWeek() else {
+            let error = Abort(.internalServerError, reason: "Could not load data for the week")
+            throw error
+        }
 
-    var description: String { return details }
-}
+        self.week = week
+    }
 
-enum WorkingDay: Int {
-    case monday
-    case tuesday
-    case wednesday
-    case thursday
-    case friday
-}
+    final func currentDayMenu() throws -> String {
+        guard let currentDay: DayName = DayName.current else {
+            let error = Abort(.internalServerError, reason: "Could not identify current day")
+            throw error
+        }
 
-struct Day {
-    var day: WorkingDay
-    var date: Date
-    var name: String
-    var meals: [MealCategory:Meal]
-}
+        // FIXME: Remove this when deploying!
+//        guard !(currentDay == .saturday || currentDay == .sunday) else {
+//            return "No menu, since it's not a working day"
+//        }
 
-struct Week {
-    var number: Int
-    var range: String
-    var days: [WorkingDay: Day]
+        if !isDataCurrent {
+            // TODO: Print warning in response
+            print("WARNING: Data is not current!!!!!!!!!!")
+        }
+
+        return try makeMenu(for: currentDay)
+    }
+
+    final func makeMenu(for day: DayName) throws -> String {
+        guard let currentDay = week.days[day] else {
+            let error = Abort(.notFound, reason: "No menu for for the day")
+            throw error
+        }
+
+        return try currentDay.makeMenu()
+    }
 }

@@ -1,3 +1,12 @@
+# Cantina Web Scrapper
+
+Web scrapper for cantina food
+
+# Tests
+
+- Add the copy files stage on the test target, and copy response.html
+- This has to be done manually as the project can be regenarated when adding packages
+
 <p align="center">
     <img src="https://cloud.githubusercontent.com/assets/1342803/24797159/52fb0d88-1b90-11e7-85a5-359fff0496a4.png" width="320" alt="MySQL">
     <br>
