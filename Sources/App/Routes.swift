@@ -6,7 +6,7 @@ extension Droplet {
         let cantina = CantinaController(drop: self)
 
         self.group(Verification(self)) { verified in
-            verified.get("today", handler: cantina.today)
+            verified.post("today", handler: cantina.today)
         }
 
     }
