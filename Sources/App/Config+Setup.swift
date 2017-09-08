@@ -8,12 +8,6 @@ extension Config {
 
         try setupProviders()
         try setupPreparations()
-        try setupMiddleware()
-    }
-
-    /// Configure middleware
-    private func setupMiddleware() throws {
-        addConfigurable(middleware: Verification(), name: "verification")
     }
 
     /// Configure providers
