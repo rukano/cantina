@@ -11,6 +11,7 @@ import Kanna
 
 final class CantinaController {
 
+    private let externalUrl: String = "http://www.friendskantine.de/index.php/speiseplan/speiseplan-bockenheim"
     var drop: Droplet
 
     init(drop: Droplet) {
@@ -18,9 +19,7 @@ final class CantinaController {
     }
 
     func today(_ req: Request) throws -> ResponseRepresentable {
-
-        let url = "http://www.friendskantine.de/index.php/speiseplan/speiseplan-bockenheim"
-        let response = try drop.client.request(.get, url)
+        let response = try drop.client.request(.get, externalUrl)
 
         guard let bytes = response.body.bytes else {
             throw Abort.serverError
@@ -28,17 +27,9 @@ final class CantinaController {
 
         let content = String(bytes: bytes)
         let cantina = try Cantina(fromWeb: content)
-
-        // TODO: REMOVE!
-        // FIXME: REMOVE!!!!!!
         let text = try cantina.makeMenu(for: .friday)
 
-        var json = JSON()
-        try json.set("text", text)
-        try json.set("icon_url", "http://friends-kantine.herokuapp.com/cantina_icon.png")
-        try json.set("response_type", "in_channel")
-
-        return json
+        return try CantinaMattermost(text).makeJson()
     }
 
 }
