@@ -5,6 +5,6 @@ extension Droplet {
 
         let cantina = CantinaController(drop: self)
 
-        post("today", handler: cantina.today)
+        get("today", handler: cantina.today)
     }
 }
