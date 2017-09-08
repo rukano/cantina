@@ -2,6 +2,9 @@
 
 Web scrapper for cantina food
 
+# TODO:
+- Don't make validation when calling static files
+
 # Tests
 
 - Add the copy files stage on the test target, and copy response.html
