@@ -18,6 +18,7 @@ final class CantinaController {
     }
 
     func today(_ req: Request) throws -> ResponseRepresentable {
+
         let url = "http://www.friendskantine.de/index.php/speiseplan/speiseplan-bockenheim"
         let response = try drop.client.request(.get, url)
 

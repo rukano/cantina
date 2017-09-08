@@ -9,7 +9,16 @@
 import Vapor
 
 final class Verification: Middleware {
+
+    var drop: Droplet
+
+    init(_ drop: Droplet) {
+        self.drop = drop
+    }
+
     func respond(to request: Request, chainingTo next: Responder) throws -> Response {
+
+        drop.log.info("Request query: \(request.description)")
 
         guard let mm_token: String = Env.get("MM_TOKEN") else {
             fatalError("No local token given")
