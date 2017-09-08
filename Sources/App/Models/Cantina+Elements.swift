@@ -17,6 +17,17 @@ enum MealType: String {
     case vegetarian = "Vegetarisch"
     case unknown = "???"
 
+    var emoji: String {
+        switch self {
+        case .soup: return ":stew:"
+        case .basic: return ":spaghetti:"
+        case .salad: return ":tomato:"
+        case .vegetarian: return ":pineapple:"
+        case .special: return ":curry:"
+        case .unknown: return "dizzy_face"
+        }
+    }
+
     static func from(title: String) -> MealType {
         switch title {
         case "Suppen / Eintöpfe": return .soup
@@ -65,16 +76,21 @@ struct Day {
     func makeMenu() throws -> String {
         let dayHeader: String = "### \(name.rawValue)"
         var mealRows: [String] = []
+        let orderedMeals: [MealType] = [.soup, .basic, .special, .vegetarian, .salad]
 
-        for (mealType, meal) in meals {
+        for mealType in orderedMeals {
             var mealArray: [String] = []
+            guard let meal = meals[mealType] else { continue }
 
-            let title = mealType.rawValue.capitalized
+            let title = mealType.emoji
             let price = String(format: "%.2f €", meal.price).replacingOccurrences(of: ".", with: ",")
-            var details = meal.description.replacingOccurrences(of: "\n", with: " ")
+            var details = meal.description.replacingOccurrences(of: "\r", with: " ")
+            details = details.replacingOccurrences(of: "\n", with: " ")
             details = details.removingDoubleSpaces().trimmingCharacters(in: .whitespacesAndNewlines)
 
-            mealArray.append("**\(title)**")
+            if mealType == .soup { details = ":ramen: :ramen: :ramen:" }
+
+            mealArray.append("\(title)")
             mealArray.append("\(details)")
             mealArray.append("\(price)")
 

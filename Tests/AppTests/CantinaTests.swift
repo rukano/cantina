@@ -26,7 +26,7 @@ class CantinaTests: TestCase {
         XCTAssertNotNil(data)
         let cantina = try Cantina(fromWeb: data.makeString())
         print(cantina)
-        print(try cantina.makeMenu(for: .monday))
+        print(try cantina.makeMenu(for: .friday))
 
         print("\n\n\n\n\n\n\n\n\n======================================================================")
     }
