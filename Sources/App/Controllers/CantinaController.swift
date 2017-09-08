@@ -27,7 +27,17 @@ final class CantinaController {
 
         let content = String(bytes: bytes)
         let cantina = try Cantina(fromWeb: content)
-        return try cantina.currentDayMenu()
+
+        // TODO: REMOVE!
+        // FIXME: REMOVE!!!!!!
+        let text = try cantina.makeMenu(for: .friday)
+
+        var json = JSON()
+        try json.set("text", text)
+        try json.set("icon_url", "http://friends-kantine.herokuapp.com/cantina_icon.png")
+        try json.set("response_type", "in_channel")
+
+        return json
     }
 
 }
