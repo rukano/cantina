@@ -11,6 +11,8 @@ import Vapor
 final class Cantina {
 
     final var week: Week
+
+    // TODO: User
     final var isDataCurrent: Bool {
         return week.number >= Date.currentWeek
     }
@@ -30,17 +32,12 @@ final class Cantina {
             throw error
         }
 
-        // FIXME: Remove this when deploying!
-        guard !(currentDay == .saturday || currentDay == .sunday) else {
+        switch currentDay {
+        case .saturday, .sunday:
             throw Abort(.notFound, reason: "It's weekend!")
+        default:
+            return try makeMenu(for: currentDay)
         }
-
-//        if !isDataCurrent {
-//            // TODO: Print warning in response
-//            print("WARNING: Data is not current!!!!!!!!!!")
-//        }
-
-        return try makeMenu(for: currentDay)
     }
 
     final func makeMenu(for day: DayName) throws -> String {
