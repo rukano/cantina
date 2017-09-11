@@ -31,21 +31,21 @@ final class Cantina {
         }
 
         // FIXME: Remove this when deploying!
-//        guard !(currentDay == .saturday || currentDay == .sunday) else {
-//            return "No menu, since it's not a working day"
-//        }
-
-        if !isDataCurrent {
-            // TODO: Print warning in response
-            print("WARNING: Data is not current!!!!!!!!!!")
+        guard !(currentDay == .saturday || currentDay == .sunday) else {
+            throw Abort(.notFound, reason: "It's weekend!")
         }
+
+//        if !isDataCurrent {
+//            // TODO: Print warning in response
+//            print("WARNING: Data is not current!!!!!!!!!!")
+//        }
 
         return try makeMenu(for: currentDay)
     }
 
     final func makeMenu(for day: DayName) throws -> String {
         guard let currentDay = week.days[day] else {
-            let error = Abort(.notFound, reason: "No menu for for the day")
+            let error = Abort(.notFound, reason: "No menu for for the day found")
             throw error
         }
 
