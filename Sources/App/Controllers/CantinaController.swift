@@ -27,7 +27,8 @@ final class CantinaController {
 
         let content = String(bytes: bytes)
         let cantina = try Cantina(fromWeb: content)
-        let text = try cantina.makeMenu(for: .friday)
+//        let text = try cantina.makeMenu(for: DayName.current)
+        let text = try cantina.currentDayMenu()
 
         return try CantinaMattermost(text).makeJson()
     }
