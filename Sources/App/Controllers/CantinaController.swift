@@ -18,7 +18,16 @@ final class CantinaController {
         self.drop = drop
     }
 
+    func text(_ req: Request) throws -> ResponseRepresentable {
+        return try requestMenuText()
+    }
+
     func today(_ req: Request) throws -> ResponseRepresentable {
+        let text = try requestMenuText()
+        return try CantinaMattermost(text).makeJson()
+    }
+
+    private func requestMenuText() throws -> String {
         let response = try drop.client.request(.get, externalUrl)
 
         guard let bytes = response.body.bytes else {
@@ -27,10 +36,8 @@ final class CantinaController {
 
         let content = String(bytes: bytes)
         let cantina = try Cantina(fromWeb: content)
-//        let text = try cantina.makeMenu(for: DayName.current)
         let text = try cantina.currentDayMenu()
-
-        return try CantinaMattermost(text).makeJson()
+        return text
     }
 
 }
