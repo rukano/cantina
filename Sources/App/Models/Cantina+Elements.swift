@@ -98,11 +98,11 @@ struct Day {
 			details = details.removingDoubleSpaces().trimmingCharacters(in: .whitespacesAndNewlines)
 			mealArray.append("\(title)")
 			mealArray.append("\(details)")
-			let row: String = "\(mealArray.joined(separator: ": "))"
+			let row: String = "\(mealArray.joined(separator: " ist "))"
 			mealRows.append(row)
 		}
 
-		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: "\n"))\nUnd wie immer, Suppe und Salat"
+		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: ". "))\nUnd wie immer, Suppe und Salat"
 		return text
 	}
 
