@@ -21,7 +21,6 @@ final class Verification: Middleware {
     func respond(to request: Request, chainingTo next: Responder) throws -> Response {
 
         drop.log.info(request.description)
-
         let dict = try convertToDictionary(request.body)
 
         guard let mm_token: String = Env.get("MM_TOKEN") else {
