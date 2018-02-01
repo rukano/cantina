@@ -26,7 +26,7 @@ final class Cantina {
         self.week = week
     }
 
-    final func currentDayMenu() throws -> String {
+	final func currentDayMenu(_ format: TextFormat) throws -> String {
         guard let currentDay: DayName = DayName.current else {
             let error = Abort(.internalServerError, reason: "Could not identify current day")
             throw error
@@ -36,16 +36,16 @@ final class Cantina {
         case .saturday, .sunday:
             throw Abort(.notFound, reason: "It's weekend!")
         default:
-            return try makeMenu(for: currentDay)
+			return try makeMenu(for: currentDay, format: format)
         }
     }
 
-    final func makeMenu(for day: DayName) throws -> String {
+	final func makeMenu(for day: DayName, format: TextFormat) throws -> String {
         guard let currentDay = week.days[day] else {
             let error = Abort(.notFound, reason: "No menu for for the day found")
             throw error
         }
 
-        return try currentDay.makeMenu()
+        return try currentDay.makeMenu(format)
     }
 }
