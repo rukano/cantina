@@ -83,7 +83,7 @@ struct Day {
 	}
 
 	private func makeAlexaMenu() throws -> String {
-		let dayHeader: String = "\(name.rawValue)"
+		let dayHeader: String = "Heute, am \(name.rawValue) gibt es:"
 		var mealRows: [String] = []
 		let orderedMeals: [MealType] = [.basic, .special, .vegetarian]
 
@@ -102,7 +102,7 @@ struct Day {
 			mealRows.append(row)
 		}
 
-		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: ". "))\nUnd wie immer, Suppe und Salat"
+		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: ". "))\nUnd wie immer, Suppe oder Salat"
 		return text
 	}
 
