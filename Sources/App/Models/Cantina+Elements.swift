@@ -102,7 +102,7 @@ struct Day {
 			mealRows.append(row)
 		}
 
-		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: ". "))\nUnd wie immer, Suppe oder Salat"
+		let text: String = "\(dayHeader)\n\(mealRows.joined(separator: ". "))\nUnd wie immer, Suppe oder Salat.\nAber heute ist C T und es gibt bei uns Spätzle mit Putengeschnetzeltem."
 		return text
 	}
 
